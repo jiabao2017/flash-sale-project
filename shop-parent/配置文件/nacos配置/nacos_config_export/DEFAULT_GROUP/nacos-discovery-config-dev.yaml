@@ -1,5 +1,0 @@
-spring:
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 47.115.221.55:8848
