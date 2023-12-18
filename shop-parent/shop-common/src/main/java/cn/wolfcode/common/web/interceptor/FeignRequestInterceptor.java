@@ -4,9 +4,7 @@ import cn.wolfcode.common.constants.CommonConstants;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
-/**
- * Created by lanxw
- */
+
 public class FeignRequestInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate template) {

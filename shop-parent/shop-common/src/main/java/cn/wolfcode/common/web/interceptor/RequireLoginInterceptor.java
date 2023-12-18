@@ -7,6 +7,7 @@ import cn.wolfcode.common.web.Result;
 import cn.wolfcode.common.web.anno.RequireLogin;
 import cn.wolfcode.redis.CommonRedisKey;
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.method.HandlerMethod;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by lanxw
  */
+@Slf4j
 public class RequireLoginInterceptor implements HandlerInterceptor {
     private StringRedisTemplate redisTemplate;
     public RequireLoginInterceptor(StringRedisTemplate redisTemplate){
@@ -25,6 +27,7 @@ public class RequireLoginInterceptor implements HandlerInterceptor {
     }
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        log.info("请求进入RequireLoginInterceptor-----");
         if(handler instanceof HandlerMethod){
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             String feignRequest = request.getHeader(CommonConstants.FEIGN_REQUEST_KEY);

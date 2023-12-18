@@ -79,4 +79,13 @@ public class SeckillProductServiceImpl implements ISeckillProductService {
         vo.setCurrentCount(seckillProduct.getStockCount());
         return vo;
     }
+
+    /**
+     * 根据秒杀商品id扣减库存
+     * @param id
+     */
+    @Override
+    public void decrStockCount(Long id) {
+        seckillProductMapper.decrStock(id);
+    }
 }

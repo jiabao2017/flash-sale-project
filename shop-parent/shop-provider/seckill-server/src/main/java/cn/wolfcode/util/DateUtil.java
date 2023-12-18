@@ -3,9 +3,7 @@ package cn.wolfcode.util;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by lanxw
- */
+
 public class DateUtil {
     /**
      * 根据日期和场次看是否在秒杀有效时间之内
