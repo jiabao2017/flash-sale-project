@@ -14,7 +14,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import sun.jvm.hotspot.gc.z.ZCollectedHeap;
 
 import java.util.*;
 
@@ -32,10 +31,11 @@ public class SeckillProductServiceImpl implements ISeckillProductService {
 
     @Autowired
     private ProductFeignApi productFeignApi;
+
     @Override
     public List<SeckillProductVo> queryByTime(Integer time) {
         List<SeckillProduct> seckillProductList = seckillProductMapper.queryCurrentlySeckillProduct(time);
-        if(seckillProductList==null||seckillProductList.size()==0){
+        if (seckillProductList == null || seckillProductList.size() == 0) {
             return Collections.EMPTY_LIST;
         }
         ArrayList<Long> productIds = new ArrayList<>();
@@ -43,7 +43,7 @@ public class SeckillProductServiceImpl implements ISeckillProductService {
             productIds.add(seckillProduct.getProductId());
         }
         Result<List<Product>> result = productFeignApi.queryByIds(productIds);
-        if(result==null||result.hasError()){
+        if (result == null || result.hasError()) {
             throw new BusinessException(SeckillCodeMsg.PRODUCT_SERVER_ERROR);
         }
         List<Product> productList = result.getData();
@@ -61,5 +61,22 @@ public class SeckillProductServiceImpl implements ISeckillProductService {
             seckillProductVoList.add(vo);
         }
         return seckillProductVoList;
+    }
+
+    @Override
+    public SeckillProductVo find(Integer time, Long seckillId) {
+        SeckillProduct seckillProduct = seckillProductMapper.find(seckillId);
+        List<Long> productIds = new ArrayList();
+        productIds.add(seckillProduct.getProductId());
+        Result<List<Product>> result = productFeignApi.queryByIds(productIds);
+        if(result==null||result.hasError()){
+            throw new BusinessException(SeckillCodeMsg.PRODUCT_SERVER_ERROR);
+        }
+        Product product = result.getData().get(0);
+        SeckillProductVo vo = new SeckillProductVo();
+        BeanUtils.copyProperties(product,vo);
+        BeanUtils.copyProperties(seckillProduct,vo);
+        vo.setCurrentCount(seckillProduct.getStockCount());
+        return vo;
     }
 }

@@ -26,4 +26,9 @@ public class SeckillProductController {
         log.info("请求进入SeckillProductController-----");
         return Result.success(seckillProductService.queryByTime(time));
     }
+
+    @RequestMapping("/find")
+    public Result<SeckillProductVo> find(Integer time,Long seckillId){
+        return Result.success(seckillProductService.find(time,seckillId));
+    }
 }

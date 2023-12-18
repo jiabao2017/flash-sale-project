@@ -35,4 +35,6 @@ public interface SeckillProductMapper {
      * @return
      */
     int getStockCount(Long seckillId);
+
+    SeckillProduct find(Long seckillId);
 }
